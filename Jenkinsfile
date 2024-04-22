@@ -1,36 +1,34 @@
-pipeline{
-            //This line is to tell Jenkins which agent should run the pipeline
-            agent any 
-            stages{
-                stage('Guthub') {
-                    steps {
-                        git 'https://github.com/visweswars/quiz.git'
-                    }
-                }
-                stage('Fetch'){ 
-                    steps{
-                        sh"${env.SOURCE}; dart pub get" 
-                    }
-                } 
-                stage('Build'){
-                    steps{
-                        sh"${env.SOURCE}; dart run lib/main.dart"
-                    }
-                }
-                stage('Lint'){
-                    steps{
-                        sh"${env.SOURCE}; dart analyze"
-                    }
-                }
-                stage('Test'){
-                    steps{
-                        sh"${env.SOURCE}; flutter test"
-                    }
-                }
-                stage('Clean'){
-                    steps{
-                        cleanWs deleteDirs: true, notFailBuild: true            
-                    }
-                } 
+pipeline {
+    agent any
+    
+    environment {
+        FLUTTER_HOME = tool 'Flutter'
+        PATH = "${env.C:\flutter}/bin:${env.C:\flutter\bin}"
+    }
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from Git
+                git 'https://github.com/visweswars/quiz.git'
             }
-        }        
+        }
+        
+        stage('Build') {
+            steps {
+                // Install dependencies
+                sh 'flutter pub get'
+                
+                // Build the Flutter app
+                sh 'flutter build'
+            }
+        }
+        
+        stage('Run') {
+            steps {
+                // Run the Flutter app
+                sh 'flutter run'
+            }
+        }
+    }
+}
