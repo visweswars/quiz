@@ -1,37 +1,21 @@
 pipeline {
-  agent any
-  
-  stages {
-    stage('Checkout') {
-      steps {
-        // Checkout source code from repository
-        git 'https://github.com/visweswars/quiz.git'
-      }
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'flutter pub get'
+                sh 'flutter build apk' // or 'flutter build ios' for iOS
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'flutter test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Add deployment steps here (e.g., copying artifacts to a server)
+            }
+        }
     }
-    
-    stage('Install Dependencies') {
-      steps {
-        // Run flutter pub get command to install dependencies
-        sh 'flutter pub get'
-      }
-    }
-
-    stage('Build Android APK') {
-      steps {
-        // Build release APK
-        sh 'flutter build apk --release'
-        
-        // Archive artifacts (optional)
-        archiveArtifacts artifacts: '**/*.apk', fingerprint: true
-      }
-    }
-
-    stage('Test') {
-      steps{
-      	// Run tests using flutter test command
-      	sh 'flutter test'
-      }      
-    }
-
-  }
 }
