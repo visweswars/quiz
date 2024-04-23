@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz/data/questions.dart';
-import 'package:quiz/questions_summary.dart';
+import 'package:quiz/questions_summary/questions_summary.dart';
 
 class ResultsScreen extends StatelessWidget {
   const ResultsScreen({
@@ -31,27 +31,27 @@ class ResultsScreen extends StatelessWidget {
     final numCorrectQuestions= summaryData.where((data) {
       return data['user_answer'] == data ['correct_answer'];
     }).length;
-   return SizedBox(
-    width: double.infinity,
-    child: Container(
-      margin: const EdgeInsets.all(40),
-      child:  Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'You answered $numCorrectQuestions out $numTotalQuestions questions correctly',
-          ),
-          const SizedBox(height: 30,),
-          QuestionsSummary(summaryData),
-          const SizedBox(height: 30,),
-          TextButton(
-            onPressed: () {} ,
-            child: const Text('Restart Quiz'),
-          ),
-        ],
+    return SizedBox(
+      width: double.infinity,
+      child: Container(
+        margin: const EdgeInsets.all(40),
+        child:  Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'You answered $numCorrectQuestions out $numTotalQuestions questions correctly',
+            ),
+            const SizedBox(height: 30,),
+            QuestionsSummary(summaryData),
+            const SizedBox(height: 30,),
+            TextButton(
+              onPressed: () {} ,
+              child: const Text('Restart Quiz'),
+            ),
+          ],
+        )
       )
-    )
-   );
+    );
   }
 
 }
